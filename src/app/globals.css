@@ -1,27 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+.logo { 
+  @apply rounded-full hover:rotate-3 transition-all dark:bg-white p-4;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+
+.input {
+  @apply rounded-md shadow-sm border-gray-300 focus:border-purple-300 focus:ring-1 focus:ring-purple-500 transition-all dark:bg-transparent dark:text-white;
+}
+
+.btn {
+  @apply text-white bg-purple-600 py-2 px-4 rounded-md shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75 transition-all;
+}
+
+.btn-small {
+  @apply p-2 text-xs;
+}
+
+.tooltip::before {
+  content: attr(data-tooltip);
+  left:initial;
+  margin:initial;
+
+  @apply hidden absolute -translate-y-11 bg-gray-800 text-white text-xs rounded-md px-2 py-1 opacity-100;
+}
+
+.tooltip:hover::before {
+
+  @apply block ;
+}
+
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: rgba(146, 51, 234, 0.879)    #ffffff;
   }
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 13px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color:rgba(146, 51, 234, 0.834)
+    ;
+    border-radius: 6px;
+    border: 2px solid #ffffff;
+  }

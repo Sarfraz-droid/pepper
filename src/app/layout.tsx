@@ -1,8 +1,10 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+import type { Metadata } from 'next'
+import { Inter, Raleway } from 'next/font/google'
+import './globals.css'
+import RootLayoutComponent from '@/components/Layout/Root'
+import { Toaster } from 'react-hot-toast'
+
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -14,9 +16,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body >
+        <Toaster />
+        <RootLayoutComponent>
+          {children}
+        </RootLayoutComponent>
+      </body>
     </html>
   )
 }
