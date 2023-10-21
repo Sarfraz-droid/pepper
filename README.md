@@ -1,4 +1,4 @@
-
+> App is currently in construction.
 
 <p align="center">
     <img src="https://github.com/Sarfraz-droid/pepper/assets/73013838/e778a44d-fc3f-4aff-a2bf-91a7b4a2b22d" style="border-radius: 25px;"/>
@@ -15,7 +15,6 @@
 </p>
 
 
-> App is currently in construction.
 
 
 Contents
