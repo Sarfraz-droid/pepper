@@ -21,3 +21,5 @@ export async function GET(request : NextRequest) {
 
     return Response.redirect(longlink);
 }
+
+export const revalidate = 3
