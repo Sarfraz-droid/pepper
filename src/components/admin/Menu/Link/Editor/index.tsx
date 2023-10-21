@@ -88,7 +88,7 @@ function EditModal({
           </div>
           <div className="flex items-center justify-between md:gap-4 w-full">
             <p className="text-xs text-right self-center font-bold p-2 px-4 bg-purple-400/25 border-purple-500 text-purple-500 rounded-md">
-              http://localhost:3000
+              {window.location.origin}
             </p>
             <p>/</p>
 
