@@ -1,23 +1,27 @@
-"use client";
+"use client"
 
 import ErrorHandler from '@/components/Error';
 import Loader from '@/components/Loader';
 import AdminContainer from '@/components/admin'
-import AdminMenu from '@/components/admin/Menu'
 import useFetch from '@/hooks/useFetch'
-import { instance } from '@/utils/app/axiosInstance'
 import Image from 'next/image'
 import React from 'react'
 import { AiFillGithub } from 'react-icons/ai';
 
 function AdminPage() {
 
-  const [{ data, error, loading }, {revalidate}] = useFetch(`http://localhost:3000/api/db`)
-
+  
+  const [{ data, error, loading }, {revalidate}] = useFetch(`${process.env.NEXT_PUBLIC_API}/api/db`)
+  
   if(loading) return <Loader />
-
+  
   if(error) return <ErrorHandler />
   
+  // return (
+  //   <div>
+  //     Hello
+  //   </div>
+  // )
   return (
     <div
       className='dark:text-white flex flex-col  items-center w-full'

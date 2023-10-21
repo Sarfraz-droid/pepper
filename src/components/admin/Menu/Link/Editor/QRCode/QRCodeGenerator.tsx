@@ -1,8 +1,5 @@
-import React, { useEffect } from "react";
-import QRCustomizer from "./Customizer";
-import useQR from "@/hooks/useQR";
+import React, { useEffect, useRef } from "react";
 import { Shortlink } from "@/types/shortlink.types";
-import { useElementPosition } from "@/hooks/useElementPosition";
 
 export const QRCodeContext = React.createContext({
   config: {},
@@ -19,27 +16,43 @@ function QRCodeComponent({
 }) {
 
 
-  const [{config, ref}, { updateConfig, downloadPNG }] = useQR(item.shortlink, 100);
+  /** To be Added later */
 
-  const [position, containerRef] = useElementPosition()
+  // const [{config, ref}, { updateConfig, downloadPNG }] = useQR(item.shortlink, 100);
 
-  useEffect(() => {
-    if(!position.width) return
-    updateConfig("width", (position.width)/2)
-    updateConfig("height", (position.width)/2)
-  },[position])
+  // const [position, containerRef] = useElementPosition()
+
+  // useEffect(() => {
+  //   if(!position.width) return
+  //   updateConfig("width", (position.width)/2)
+  //   updateConfig("height", (position.width)/2)
+  // },[position])
+
+  const ref = useRef(null)
+
+  const downloadPNG = () => {
+    if(!ref.current) return
+
+    const link = document.createElement('a')
+    link.target = "_blank"
+    link.download = "qr-code.png"
+    link.href = (ref.current as any).src
+    link.click()
+  }
+
 
   return (
-    <QRCodeContext.Provider value={{ config, updateConfig }}>
       <div className="w-full h-full flex flex-col">
         <div className="text-xs pt-2 font-semibold text-center text-gray-400">
           QR Code Generator
         </div>
         <div className="flex md:flex-row flex-col justify-center w-full h-full">
           <div className="flex-1 items-center flex flex-col"
-            ref={containerRef}
           >
-            <div 
+            {/* <div 
+              className="p-2 rounded-md border-black/20"
+            /> */}
+            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${item.shortlink}`} alt="QR Code"
               className="p-2 rounded-md border-black/20"
               ref={ref}
             />
@@ -69,11 +82,15 @@ function QRCodeComponent({
             </div>
           </div>
           <div className="flex-1 h-full overflow-auto">
-            <QRCustomizer />
+            {/* <QRCustomizer /> */}
+            <div
+              className="flex flex-col items-center justify-center w-full h-full italic "
+            >
+              Coming Soon
+            </div>
           </div>
         </div>
       </div>
-    </QRCodeContext.Provider>
   );
 }
 

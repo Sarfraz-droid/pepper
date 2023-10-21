@@ -6,7 +6,7 @@ import { verifyToken } from './utils/api/getToken'
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')
 
-  console.log('Token : ' + token?.value)
+  // console.log('Token : ' + token?.value)
 
   if (!token || !verifyToken(token.value)) {
     return NextResponse.redirect(new URL('/admin/login', request.url))

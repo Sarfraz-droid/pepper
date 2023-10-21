@@ -15,7 +15,7 @@ function DeleteModal({
 
   return createPortal(
     <Modal
-        ref={ref as any}
+        innerRef={ref as any}
         onBackgroundClick={() => {
             onClose()
         }}
