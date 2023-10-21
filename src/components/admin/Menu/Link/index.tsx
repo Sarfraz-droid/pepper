@@ -1,6 +1,6 @@
 "use client";
 
-import { useHover } from "@uidotdev/usehooks";
+import { useHover, useMediaQuery } from "@uidotdev/usehooks";
 import React, { Fragment, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import EditModal from "./Editor";
@@ -13,12 +13,14 @@ import {
   AiOutlineDelete,
   AiOutlineEdit,
 } from "react-icons/ai";
-import { BiDotsVertical } from "react-icons/bi";
-import { Menu, Transition } from "@headlessui/react";
 import DeleteModal from "./Delete";
 import { instance } from "@/utils/app/axiosInstance";
+import _ from 'lodash'
 
 function LinkCard({ item }: { item: Shortlink }) {
+
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+
   const [ref, hovering] = useHover();
 
   const { modalID, updateModalID, revalidate } = useContext(AdminContext);
@@ -65,7 +67,7 @@ function LinkCard({ item }: { item: Shortlink }) {
       className="flex justify-between items-center p-2  text-black rounded-md hover:bg-black/10  transition-all cursor-pointer hover:-translate-y-1 z-0"
       ref={ref as any}
     >
-      <div className="flex flex-col w-full justify-start items-start flex-1">
+      <div className="flex flex-col w-1/2 justify-start items-start flex-1">
         <div className="flex gap-2">
           <div
             className={`text-md pl-2 py-1 w-52 md:w-80 text-ellipsis transition-all whitespace-nowrap overflow-hidden`}
@@ -75,7 +77,7 @@ function LinkCard({ item }: { item: Shortlink }) {
             </a>
           </div>
         </div>
-        <div className="text-xs flex pl-3">
+        <div className="text-xs justify-start items-start w-1/ flex pl-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -94,7 +96,10 @@ function LinkCard({ item }: { item: Shortlink }) {
             href={item.longlink}
             className="pl-1 italic underline underline-offset-1 hover:underline-offset-4 hover:-translate-y-1 opacity-75 transition-all"
           >
-            {item.longlink}
+            {_.truncate(item.longlink, { 
+              
+              length: isSmallDevice ? 20 : 50 
+            })}
           </a>
         </div>
       </div>
