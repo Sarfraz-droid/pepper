@@ -1,7 +1,7 @@
 
 
 <p align="center">
-    <img src="https://github.com/Sarfraz-droid/pepper/assets/73013838/e4257740-6d97-4e88-8c17-4d088dcc9b6d" style="border-radius: 25px;"/>
+    <img src="https://github.com/Sarfraz-droid/pepper/assets/73013838/e778a44d-fc3f-4aff-a2bf-91a7b4a2b22d" style="border-radius: 25px;"/>
 </p>
 
 <h1 align="center">Pepper</h1>
