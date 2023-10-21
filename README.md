@@ -23,7 +23,7 @@ Pepper allows you to manage your shortlinks with ease. It is built with Next.js 
 ### Tech Stack
  - Next.js
  - Edge Functions
- - TailwindCSS
+ - Tailwind CSS
 
 ### Installation
 

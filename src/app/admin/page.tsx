@@ -11,17 +11,12 @@ import { AiFillGithub } from 'react-icons/ai';
 function AdminPage() {
 
   
-  const [{ data, error, loading }, {revalidate}] = useFetch(`${process.env.NEXT_PUBLIC_API}/api/db`)
+  const [{ data, error, loading }, {revalidate}] = useFetch(`/api/db`)
   
   if(loading) return <Loader />
   
   if(error) return <ErrorHandler />
-  
-  // return (
-  //   <div>
-  //     Hello
-  //   </div>
-  // )
+
   return (
     <div
       className='dark:text-white flex flex-col  items-center w-full'

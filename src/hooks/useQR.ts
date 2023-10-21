@@ -6,7 +6,7 @@ function useQR(url : string, size: number) {
     const [config, setConfig] = React.useState({
         width: size,
         height: size,
-        data: `${process.env.NEXT_PUBLIC_API}/${url}`,
+        data: `${window.location.origin}/${url}`,
         image: '',
         dotsOptions: {
             color: '#000000',

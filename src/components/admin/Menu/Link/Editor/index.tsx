@@ -37,7 +37,7 @@ function EditModal({
   };
 
   const saveData = async () => {
-    const {data} = await instance.post(`${process.env.NEXT_PUBLIC_API}/api/db`, {
+    const {data} = await instance.post(`/api/db`, {
       ...formData,
       id: item.id
     })

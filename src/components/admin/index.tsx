@@ -32,7 +32,7 @@ function AdminContainer({
   };
 
   const createShortlink = async () => {
-    const { data } = await instance.post(`${process.env.NEXT_PUBLIC_API}/api/db`, {
+    const { data } = await instance.post(`/api/db`, {
       shortlink: window.crypto.randomUUID(),
       longlink: "https://google.com",
     });

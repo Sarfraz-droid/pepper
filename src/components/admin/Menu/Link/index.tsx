@@ -28,7 +28,7 @@ function LinkCard({ item }: { item: Shortlink }) {
   const copyToClipboard = () => {
     console.log("copying");
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_API}/${item.shortlink}`
+      `${window.location.origin}/${item.shortlink}`
     );
     toast.success("Copied to clipboard", {
       icon: "📋",
@@ -41,7 +41,7 @@ function LinkCard({ item }: { item: Shortlink }) {
   };
 
   const deleteLink = async () => {
-    await instance.delete(`${process.env.NEXT_PUBLIC_API}/api/db`, {
+    await instance.delete(`/api/db`, {
       params: {
         id: item.id,
       },
@@ -70,7 +70,7 @@ function LinkCard({ item }: { item: Shortlink }) {
           <div
             className={`text-md pl-2 py-1 w-52 md:w-80 text-ellipsis transition-all whitespace-nowrap overflow-hidden`}
           >
-            <a href={`${process.env.NEXT_PUBLIC_API}/${item.shortlink}`}>
+            <a href={`${window.location.origin}/${item.shortlink}`}>
               {item.shortlink}
             </a>
           </div>
