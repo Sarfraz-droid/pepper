@@ -1,6 +1,6 @@
 # Pepper
 
-> App is currently in development stage.
+> App is currently in construction.
 
 `pepper` helps you manage your shortlinks with ease using Next.js and Vercel serverless functions.
 
@@ -14,7 +14,6 @@ Contents
     - [Tech Stack](#tech-stack)
     - [Installation](#installation)
     - [Deployment to Vercel](#deployment-to-vercel)
-    - [Want to Contribute?](#want-to-contribute)
 
 ### Why?
 
@@ -43,10 +42,16 @@ npm run dev
 ```
 
 ### Deployment to Vercel
-Coming Soon!
 
+<a href="https://vercel.com/new/clone?repository-url=https://github.com/Sarfraz-droid/pepper"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 
-### Want to Contribute?
----
+**Deployment Steps**
 
-Check out `CONTRIBUTING.md` and the `docs` directory.
+1. Press the button above to deploy to **Vercel**.
+2. Add the following environment variables in the Vercel dashboard.
+   1. **NEXT_PUBLIC_ID** - Your Login Username
+   2. **NEXT_PUBLIC_PASSWORD** - Your Login Password
+3. Connect Postgres database to your Vercel project. Follow [this](https://vercel.com/docs/storage/vercel-postgres/quickstart) guide.
+4. All done! 🎉
+5. (Optional) If you want to use your own domain, follow [this](https://vercel.com/guides/how-do-i-add-a-custom-domain-to-my-vercel-project) guide.
+
