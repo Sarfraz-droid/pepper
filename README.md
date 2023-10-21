@@ -1,8 +1,20 @@
-# Pepper
-
 > App is currently in construction.
 
-`pepper` helps you manage your shortlinks with ease using Next.js and Vercel serverless functions.
+<p align="center">
+    <img src="https://github.com/Sarfraz-droid/pepper/assets/73013838/e778a44d-fc3f-4aff-a2bf-91a7b4a2b22d" style="border-radius: 25px;"/>
+</p>
+
+<h1 align="center">Pepper</h1>
+<p align="center">
+    <code>pepper</code> lets you manage your shortlinks with ease using Next.js and Vercel serverless functions.
+</p>
+
+<br/>
+<p align="center">
+    <img src="https://github.com/Sarfraz-droid/pepper/assets/73013838/673c0558-4455-43d3-b33b-810a9b557b04" />
+</p>
+
+
 
 
 Contents
