@@ -43,3 +43,5 @@ export async function GET(request: NextRequest) {
 
     return Response.json({token: token})
 }
+
+export const revalidate = 3;

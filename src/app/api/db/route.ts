@@ -51,3 +51,5 @@ export async function DELETE(request: NextRequest) {
         deleted: true,
     });
 }
+
+export const revalidate = 3;
