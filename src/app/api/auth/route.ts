@@ -12,8 +12,6 @@ export async function POST(request: NextRequest) {
 
     const token = createToken(username, password);
 
-    // console.log(process.env.NEXT_PUBLIC_ID, process.env.NEXT_PUBLIC_PASSWORD, username, password)
-
     if(!verifyToken(token)) {
         return Response.json({error: "Invalid username or password"})
     }

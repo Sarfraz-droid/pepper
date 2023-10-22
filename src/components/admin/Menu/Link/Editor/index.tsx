@@ -96,6 +96,7 @@ function EditModal({
               className="input dark:border-2  dark:bg-gray-400/40 dark:text-black/60 focus:border-black/60 focus:ring-0 dark:focus:bg-gray-200/10 font-semibold dark:border-transparent p-1 text-sm"
               value={formData.shortlink}
               onChange={updateFormData("shortlink")}
+              data-testid="shortlink-input"
             />
             <div> </div>
           </div>
@@ -124,6 +125,7 @@ function EditModal({
             className="input dark:border-2 w-5/6  dark:bg-gray-400/40 dark:text-black/60 focus:border-black/60 focus:ring-0 dark:focus:bg-gray-200/10 font-semibold dark:border-transparent p-1 text-sm md:w-4/6"
             value={formData.longlink}
             onChange={updateFormData("longlink")}
+            data-testid="longlink-input"
           />
         </div>
         <div className="border mt-4 w-1/3 " />
@@ -134,12 +136,14 @@ function EditModal({
       <div className="p-2 h-[8%] border-t border-black/10 flex gap-2 justify-end items-end">
         <Button className="btn btn-small" loader
           onClick={saveData}
+          data-testid="save-shortlink"
         >Save</Button>
         <button
           className="btn btn-small dark:bg-transparent
                 dark:text-purple-600
                 dark:hover:bg-purple-300/20 dark:font-bold"
           onClick={onClose}
+          data-testid="cancel-shortlink"
         >
           Cancel
         </button>

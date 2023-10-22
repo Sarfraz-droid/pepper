@@ -57,6 +57,7 @@ function AdminContainer({
               className="text-xs bg-purple-600 w-full self-center h-8 rounded-md text-white"
               onClick={createShortlink}
               loader
+              data-testid="create-shortlink"
             >
               + Create Shortlink
             </Button>

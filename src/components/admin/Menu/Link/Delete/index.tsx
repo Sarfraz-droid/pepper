@@ -45,6 +45,7 @@ function DeleteModal({
                     className='p-2 bg-purple-600 rounded-md px-5 text-white hover:bg-purple-700 transition-all focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-white'
                     onClick={onDelete}
                     loader
+                    data-testid='confirm-delete-link'
                 >
                     Yes
                 </Button>
@@ -53,6 +54,7 @@ function DeleteModal({
                     onClick={() => {
                         onClose()
                     }}
+                    data-testid='cancel-delete-link'
                 >
                     No
                 </button>

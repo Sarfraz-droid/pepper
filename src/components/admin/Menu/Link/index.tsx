@@ -115,6 +115,7 @@ function LinkCard({ item }: { item: Shortlink }) {
           className="btn dark:bg-gray-300/30 dark:text-black w-9 h-9 flex flex-col justify-center items-center rounded-none dark:hover:bg-slate-400/40"
           data-tooltip="Edit"
           onClick={() => updateModalID(item.id)}
+          data-testid={`edit-${item.shortlink}`}
         >
           <AiOutlineEdit />
         </button>
@@ -122,12 +123,14 @@ function LinkCard({ item }: { item: Shortlink }) {
         <button
           className="btn dark:bg-gray-300/30 dark:text-black w-9 h-9 flex flex-col justify-center items-center rounded-none dark:hover:bg-slate-400/40"
           onClick={copyToClipboard}
+          data-testid={`copy-${item.shortlink}`}
         >
           <AiOutlineCopy />
         </button>
         <button
           className="btn dark:bg-red-300/30 dark:text-black w-9 h-9 flex flex-col justify-center items-center rounded-none dark:hover:bg-red-400/40"
           onClick={() => setIsDeleteModalOpen(true)}
+          data-testid={`delete-${item.shortlink}`}
         >
           <AiFillDelete className="text-red-500 w-5 h-5" />
         </button>
