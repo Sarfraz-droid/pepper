@@ -33,7 +33,7 @@ jobs:
       - name: Build Project
         run: npm run build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
-          # Upload entire repository
-          path: './.next/'
+          name: 'Build'
+          path: .next/*
