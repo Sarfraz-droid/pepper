@@ -4,14 +4,20 @@ import ErrorHandler from '@/components/Error';
 import Loader from '@/components/Loader';
 import AdminContainer from '@/components/admin'
 import useFetch from '@/hooks/useFetch'
+import { instance } from '@/utils/app/axiosInstance';
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AiFillGithub } from 'react-icons/ai';
 
 function AdminPage() {
 
   
   const [{ data, error, loading }, {revalidate}] = useFetch(`/api/db`)
+
+  useEffect(() => {
+    instance.defaults.withCredentials = true  
+    instance.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem('token')}`
+  },[])
   
   if(loading) return <Loader />
   

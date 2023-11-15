@@ -35,6 +35,8 @@ function AdminContainer({
     const { data } = await instance.post(`/api/db`, {
       shortlink: window.crypto.randomUUID(),
       longlink: "https://google.com",
+    }, {
+      withCredentials: true,
     });
 
     setModalID(data.id);

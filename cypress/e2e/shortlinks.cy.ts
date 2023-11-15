@@ -3,7 +3,7 @@ describe('Dashboard', () => {
         cy.window().then((win) => {
             win.document.cookie = 'token=8da193366e1554c08b2870c50f737b9587c3372b656151c4a96028af26f51334; path=/admin;'
         })
-
+        cy.wait(1000)
     })
 
     it('should visit dashboard', () => {
