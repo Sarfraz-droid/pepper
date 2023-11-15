@@ -16,6 +16,7 @@ function LoginPage() {
     const res = await instance.post("/api/auth", formDetails);
 
     if (res.data.token) {
+      document.cookie = `token=${res.data.token}; path=/admin`;
       window.localStorage.setItem("token", res.data.token);
       window.location.href = "/admin";
     }
