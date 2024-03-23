@@ -108,8 +108,9 @@ function EditModal({ item }: { item: Shortlink }) {
                       tabIndex={0}
                       className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
                     >
-                      {domains.map((item) => (
+                      {domains.map((item, index) => (
                         <li
+                          key={index}
                           className="p-2 text-start btn btn-sm btn-ghost font-normal text-xs"
                           onClick={() => updateDomain(item)}
                         >
