@@ -13,17 +13,34 @@ export async function GET(request: NextRequest) {
 export const POST = serviceHandler(
   verifyRoute,
   async (request: NextRequest) => {
-    console.log("Updating shortlink");
-    const { shortlink, longlink, id } = await request.json();
+    const { shortlink, longlink, id, domain_id } = await request.json();
 
     if (!shortlink || !longlink) {
-      return ResponseManager.json({ error: "Missing shortlink or longlink" }, {
-        status: 400
-      });
+      return ResponseManager.json(
+        { error: "Missing shortlink or longlink" },
+        {
+          status: 400,
+        }
+      );
     }
 
+    const command = {
+      longlink: longlink,
+      shortlink: shortlink,
+      domain_id: domain_id,
+    } as {
+      [key: string]: any;
+    };
+
+    let path = Object.keys(command).map((key) => {
+      if (command[key]) return `${key} = ${command[key]}`;
+      return undefined;
+    });
+
+    path = path.filter((value) => value);
+
     if (id) {
-      await sql`UPDATE shortlinks SET longlink = ${longlink}, shortlink = ${shortlink} WHERE id = ${id}`;
+      await sql`UPDATE shortlinks SET longlink = ${longlink}, shortlink = ${shortlink}, domain_id = ${domain_id} WHERE id = ${id}`;
 
       return ResponseManager.json({
         success: true,
@@ -31,7 +48,7 @@ export const POST = serviceHandler(
       });
     } else {
       const { rows } =
-        await sql`INSERT INTO shortlinks (shortlink, longlink) VALUES (${shortlink}, ${longlink}) RETURNING id`;
+        await sql`INSERT INTO shortlinks (shortlink, longlink, domain_id) VALUES (${shortlink}, ${longlink}, ${domain_id}) RETURNING id`;
 
       return ResponseManager.json({
         success: true,
@@ -41,10 +58,6 @@ export const POST = serviceHandler(
     }
   }
 );
-
-// export async function POST(request: NextRequest) {
-//     console.log(request.cookies.getAll())
-// }
 
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
