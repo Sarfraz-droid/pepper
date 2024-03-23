@@ -14,7 +14,7 @@ function LoginPage() {
 
   const handleLogin = async () => {
     const res = await instance.post("/api/auth", formDetails);
-    console.log(res)
+
     if (res.data.token) {
       document.cookie = `token=${res.data.token}; path=/admin`;
       window.localStorage.setItem("token", res.data.token);
@@ -42,7 +42,8 @@ function LoginPage() {
       </h1>
       <p className="text-white/50 mb-4">Handle Your ShortLinks, Easily</p>
       <div className="w-1/3 my-8 border border-white/10" />
-      <form className="bg-white md:w-1/3 flex flex-col gap-4 dark:bg-black/20 dark:border-2 border-white/10 p-5 rounded-md shadow-2xl shadow-purple-800/10"
+      <form
+        className="bg-white md:w-1/3 flex flex-col gap-4 dark:bg-black/20 dark:border-2 border-white/10 p-5 rounded-md shadow-2xl shadow-purple-800/10"
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -54,7 +55,7 @@ function LoginPage() {
             Username
           </label>
           <input
-            className="input"
+            className="input input-ghost focus:bg-black text-white focus:text-white"
             type="text"
             placeholder="Username"
             data-testid="username"
@@ -68,7 +69,7 @@ function LoginPage() {
             Password
           </label>
           <input
-            className="input"
+            className="input input-ghost focus:bg-black text-white focus:text-white"
             type="password"
             placeholder="Password"
             data-testid="password"
@@ -79,7 +80,10 @@ function LoginPage() {
         </div>
 
         <div className="mt-3">
-          <Button className="btn w-full" onClick={handleLogin} loader
+          <Button
+            className="btn w-full"
+            onClick={handleLogin}
+            loader
             data-testid="login"
           >
             Login

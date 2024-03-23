@@ -1,75 +1,22 @@
 "use client";
 
 import React from "react";
-import AdminMenu from "./Menu";
+import AdminMenu from "./ShortLink";
 import { Shortlink } from "@/types/shortlink.types";
 import { instance } from "@/utils/app/axiosInstance";
 import Button from "../UI/Button";
+import { AdminTabs } from "@/types/admin";
+import ShortlinksContainer from "./ShortlinksContainer";
+import DomainsContainer from "./DomainsContainer";
 
-export const AdminContext = React.createContext({
-  data: {},
-  modalID: -1,
-  updateModalID: (id: number) => undefined,
-  revalidate: () => undefined,
-} as {
-  data: Shortlink[];
-  modalID: number;
-  updateModalID: (id: number) => void;
-  revalidate: () => any;
-});
+function AdminContainer({ tab }: { tab: AdminTabs }) {
+  if (tab === AdminTabs.DOMAINS) {
+    return <DomainsContainer />;
+  }
 
-function AdminContainer({
-  data,
-  revalidate,
-}: {
-  data: Shortlink[];
-  revalidate: () => void;
-}) {
-  const [modalID, setModalID] = React.useState(-1);
-
-  const updateModalID = (id: number) => {
-    setModalID(id);
-  };
-
-  const createShortlink = async () => {
-    const { data } = await instance.post(`/api/db`, {
-      shortlink: window.crypto.randomUUID(),
-      longlink: "https://google.com",
-    }, {
-      withCredentials: true,
-    });
-
-    setModalID(data.id);
-    revalidate();
-  };
-
-  return (
-    <React.Fragment>
-      <AdminContext.Provider
-        value={{ data, modalID, updateModalID, revalidate }}
-      >
-        <div className="bg-white p-2 rounded-md mt-4 w-full md:w-1/2">
-          <div className="flex justify-center items-center gap-4">
-            <input
-              className=" input w-full hidden text-xs md:text-base h-8 md:h-full dark:text-black"
-              type="text"
-              placeholder="Search for a shortlink"
-            />
-            <Button
-              className="text-xs bg-purple-600 w-full self-center h-8 rounded-md text-white"
-              onClick={createShortlink}
-              loader
-              data-testid="create-shortlink"
-            >
-              + Create Shortlink
-            </Button>
-          </div>
-          <div className="border border-black/10 mt-4" />
-          <AdminMenu />
-        </div>
-      </AdminContext.Provider>
-    </React.Fragment>
-  );
+  if (tab === AdminTabs.SHORT_LINKS) {
+    return <ShortlinksContainer />;
+  }
 }
 
 export default AdminContainer;
