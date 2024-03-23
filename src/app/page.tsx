@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
     <main>
       <div className="bg-white pb-6 sm:pb-8 lg:pb-12">
@@ -44,13 +42,13 @@ export default function Home() {
                 Open Source way to Manage your Short Links
               </h1>
 
-              <p className="mb-8 leading-relaxed text-gray-500 md:mb-12 lg:w-4/5 xl:text-lg">
+              <div className="mb-8 leading-relaxed text-gray-500 md:mb-12 lg:w-4/5 xl:text-lg">
                 <ul>
                   <li>Manage Shortlinks</li>
                   <li>Custom Doamins</li>
                   <li>Many more...</li>
                 </ul>
-              </p>
+              </div>
 
               <div className="flex flex-col gap-2.5 sm:flex-row sm:justify-center lg:justify-start">
                 <a

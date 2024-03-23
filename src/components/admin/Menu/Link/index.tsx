@@ -74,7 +74,9 @@ function LinkCard({ item }: { item: Shortlink }) {
             className={`text-md pl-2 py-1 w-52 md:w-80 text-ellipsis transition-all whitespace-nowrap overflow-hidden`}
           >
             <a href={`${window.location.origin}/${item.shortlink}`}>
-              {host?.domain}
+              <div className="text-xs text-primary opacity-60 font-semibold">
+                {host?.domain}
+              </div>
               {"/"}
               {item.shortlink}
             </a>
