@@ -9,6 +9,7 @@ import { instance } from "@/utils/app/axiosInstance";
 import toast from "react-hot-toast";
 import DeleteDomains from "../Modal/DeleteDomain";
 import { openModal } from "@/utils/app/modalHelpers";
+import { revalidatePath } from "next/cache";
 
 type IProps = {
   data: IDomain;

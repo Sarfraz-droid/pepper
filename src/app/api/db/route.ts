@@ -2,6 +2,7 @@ import { verifyToken } from "@/utils/api/getToken";
 import verifyRoute from "@/utils/api/middlewares/verifyRoute";
 import { ResponseManager, serviceHandler } from "@/utils/api/serviceHandler";
 import { sql } from "@vercel/postgres";
+import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -42,6 +43,10 @@ export const POST = serviceHandler(
     if (id) {
       await sql`UPDATE shortlinks SET longlink = ${longlink}, shortlink = ${shortlink}, domain_id = ${domain_id} WHERE id = ${id}`;
 
+      console.log("Revalidating Path", `/${shortlink}`);
+
+      revalidatePath(`/${shortlink}`);
+
       return ResponseManager.json({
         success: true,
         id: id,
@@ -50,6 +55,8 @@ export const POST = serviceHandler(
       const { rows } =
         await sql`INSERT INTO shortlinks (shortlink, longlink, domain_id) VALUES (${shortlink}, ${longlink}, ${domain_id}) RETURNING id`;
 
+      console.log("Revalidating Path");
+      revalidatePath(`/${shortlink}`);
       return ResponseManager.json({
         success: true,
         created: true,

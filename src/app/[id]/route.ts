@@ -1,8 +1,10 @@
 import { NextRequest } from "next/server";
 import { sql } from "@vercel/postgres";
 
+export const revalidate = 3600;
+export const dynamic = "force-static";
 export async function GET(request: NextRequest) {
-  const host = request.headers.get("host");
+  const host = request.nextUrl.host;
   const path = request.nextUrl.pathname;
 
   const shortlink = path.split("/")[1];
@@ -14,6 +16,8 @@ export async function GET(request: NextRequest) {
     AND d.id = s.domain_id)
     OR (s.domain_id is NULL and 
     s.shortlink = ${shortlink}) LIMIT 1`;
+
+  console.log("Result", rows, host, path);
 
   if (rows.length === 0) {
     return Response.json({ error: "Invalid shortlink" });
@@ -31,5 +35,3 @@ export async function GET(request: NextRequest) {
 
   return Response.redirect(`http://${process.env.HOST_NAME}/invalid-link`);
 }
-
-// export const revalidate = 3;

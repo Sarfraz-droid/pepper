@@ -14,6 +14,7 @@ import { findHostDomain } from "@/utils/app/shortlinkHelpers";
 import { isString } from "lodash";
 import { IDomain } from "@/types/domain.types";
 import { closeModal } from "@/utils/app/modalHelpers";
+import { revalidatePath } from "next/cache";
 
 function EditModal({ item }: { item: Shortlink }) {
   const [_, ref] = useElementPosition();
