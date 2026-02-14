@@ -20,6 +20,11 @@ function EditModal({ item }: { item: Shortlink }) {
 
   const [formData, setFormData] = React.useState(item);
 
+  // Sync formData with item prop when it changes
+  React.useEffect(() => {
+    setFormData(item);
+  }, [item]);
+
   const { revalidate, domains } = useContext(AdminContext);
 
   const host = useMemo(() => {
