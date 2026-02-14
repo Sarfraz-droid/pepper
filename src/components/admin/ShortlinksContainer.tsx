@@ -60,15 +60,15 @@ function ShortlinksContainer() {
           revalidateDomains,
         }}
       >
-        <div className="bg-white p-2 rounded-md mt-4 w-full md:w-1/2">
+        <div className="bg-card border border-border p-2 rounded-md mt-4 w-full md:w-1/2">
           <div className="flex justify-center items-center gap-4">
             <input
-              className=" input w-full hidden text-xs md:text-base h-8 md:h-full dark:text-black"
+              className="input w-full hidden text-xs md:text-base h-8 md:h-full bg-background text-foreground"
               type="text"
               placeholder="Search for a shortlink"
             />
             <Button
-              className="text-xs bg-purple-600 w-full self-center h-10 font-semibold hover:bg-purple-700 rounded-md text-white"
+              className="text-xs w-full self-center h-10 font-semibold rounded-md"
               onClick={createShortlink}
               loader
               data-testid="create-shortlink"
@@ -76,7 +76,7 @@ function ShortlinksContainer() {
               + Create Shortlink
             </Button>
           </div>
-          <div className="border border-black/10 mt-4" />
+          <div className="border border-border mt-4" />
           <AdminMenu />
         </div>
       </AdminContext.Provider>
