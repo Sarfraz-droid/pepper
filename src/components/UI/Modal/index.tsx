@@ -17,13 +17,13 @@ function Modal({
 }) {
   return (
     <React.Fragment>
-      <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center" />
+      <div className="absolute top-0 left-0 w-full h-full bg-black/70 flex justify-center items-center" />
 
       <motion.div className="absolute modal-container top-0 left-0 w-full h-full flex justify-center items-center"
         onClick={onBackgroundClick}
       >
         <motion.div
-          className={`bg-white rounded-md shadow-lg overflow-auto ${className?.modal}`}
+          className={`bg-card border border-border rounded-md shadow-lg overflow-auto ${className?.modal}`}
           ref={innerRef as any}
           onClick={(e) => e.stopPropagation()}
           initial={{

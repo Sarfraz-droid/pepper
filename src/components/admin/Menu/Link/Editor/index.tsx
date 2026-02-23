@@ -20,6 +20,11 @@ function EditModal({ item }: { item: Shortlink }) {
 
   const [formData, setFormData] = React.useState(item);
 
+  // Sync formData with item prop when it changes
+  React.useEffect(() => {
+    setFormData(item);
+  }, [item]);
+
   const { revalidate, domains } = useContext(AdminContext);
 
   const host = useMemo(() => {
@@ -70,7 +75,7 @@ function EditModal({ item }: { item: Shortlink }) {
           key={item.id}
         >
           <button
-            className="p-1 dark:bg-white rounded-full hover:bg-black/10 transition-all mt-2"
+            className="p-1 bg-secondary hover:bg-secondary/80 rounded-full transition-all mt-2"
             onClick={onClose}
           >
             <svg
@@ -79,7 +84,7 @@ function EditModal({ item }: { item: Shortlink }) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-black/40"
+              className="w-6 h-6 text-muted-foreground"
             >
               <path
                 strokeLinecap="round"
@@ -92,7 +97,7 @@ function EditModal({ item }: { item: Shortlink }) {
         <div className="w-full overflow-auto flex flex-col md:p-9 h-[80%] gap-6 flex-1">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col md:w-full justify-evenly">
-              <div className="mb-1 flex gap-4 font-semibold text-gray-800">
+              <div className="mb-1 flex gap-4 font-semibold text-foreground">
                 Shortlink
               </div>
               <div className="flex items-center md:gap-2 w-full">
@@ -122,7 +127,7 @@ function EditModal({ item }: { item: Shortlink }) {
                 </p>
                 <p>/</p>
                 <input
-                  className="input input-ghost input-sm w-full bg-black/10"
+                  className="input input-ghost input-sm w-full bg-input text-foreground"
                   value={formData.shortlink}
                   onChange={updateFormData("shortlink")}
                   data-testid="shortlink-input"
@@ -130,11 +135,11 @@ function EditModal({ item }: { item: Shortlink }) {
               </div>
             </div>
             <div className="flex flex-col md:w-full justify-evenly">
-              <div className="mb-1 flex gap-4 font-semibold text-gray-800">
+              <div className="mb-1 flex gap-4 font-semibold text-foreground">
                 Long URL
               </div>
               <textarea
-                className="textarea bg-black/10 resize-none"
+                className="textarea bg-input text-foreground resize-none"
                 value={formData.longlink}
                 onChange={updateFormData("longlink")}
                 rows={5}
@@ -144,7 +149,7 @@ function EditModal({ item }: { item: Shortlink }) {
           </div>
           <QRCodeComponent item={formData} />
         </div>
-        <div className="p-2 h-[12%] border-t border-black/10 flex gap-2 justify-end items-end">
+        <div className="p-2 h-[12%] border-t border-border flex gap-2 justify-end items-end">
           <Button
             className="btn btn-primary"
             loader
@@ -154,7 +159,7 @@ function EditModal({ item }: { item: Shortlink }) {
             Save
           </Button>
           <button
-            className="btn btn-ghost text-black"
+            className="btn btn-ghost text-foreground"
             onClick={onClose}
             data-testid="cancel-shortlink"
           >

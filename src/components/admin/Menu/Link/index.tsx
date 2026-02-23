@@ -65,7 +65,7 @@ function LinkCard({ item }: { item: Shortlink }) {
 
   return (
     <div
-      className="flex justify-between items-center p-2  text-black rounded-md hover:bg-black/10  transition-all cursor-pointer hover:-translate-y-1 z-0"
+      className="flex justify-between items-center p-2 text-foreground rounded-md hover:bg-accent transition-all cursor-pointer hover:-translate-y-1 z-0"
       ref={ref as any}
     >
       <div className="flex flex-col w-1/2 justify-start items-start flex-1">
@@ -114,7 +114,7 @@ function LinkCard({ item }: { item: Shortlink }) {
         }}
       >
         <button
-          className="btn btn-ghost p-0 bg-gray-400/30 hover:bg-gray-300/80 rounded-lg w-9 h-9 flex flex-col justify-center items-center"
+          className="btn btn-ghost p-0 bg-secondary hover:bg-secondary/80 rounded-lg w-9 h-9 flex flex-col justify-center items-center"
           data-tooltip="Edit"
           onClick={() => openModal(`modal-${item.id}`)}
           data-testid={`edit-${item.shortlink}`}
@@ -123,7 +123,7 @@ function LinkCard({ item }: { item: Shortlink }) {
         </button>
 
         <button
-          className="btn btn-ghost p-0 bg-gray-400/30 hover:bg-gray-300/80 rounded-lg w-9 h-9 flex flex-col justify-center items-center"
+          className="btn btn-ghost p-0 bg-secondary hover:bg-secondary/80 rounded-lg w-9 h-9 flex flex-col justify-center items-center"
           onClick={copyToClipboard}
           data-testid={`copy-${item.shortlink}`}
         >

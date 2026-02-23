@@ -54,17 +54,17 @@ function DomainCard(props: IProps) {
 
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center  text-black rounded-md hover:bg-black/10 transition-all cursor-pointer hover:-translate-y-1 z-0 my-2">
+      <div className="flex justify-between items-center text-foreground rounded-md hover:bg-accent transition-all cursor-pointer hover:-translate-y-1 z-0 my-2">
         <div className="flex flex-col justify-start items-start flex-1 gap-2">
           <div className="flex gap-2 w-full justify-center items-center">
             <div
-              className={`text-md pl-8 w-52 md:w-80 text-ellipsis transition-all whitespace-nowrap overflow-hidden text-black`}
+              className={`text-md pl-8 w-52 md:w-80 text-ellipsis transition-all whitespace-nowrap overflow-hidden`}
             >
               {props.data.domain}
             </div>
             <div className="flex justify-end items-end w-full  gap-2">
               <button
-                className="btn btn-ghost my-2 bg-gray-400/30 hover:bg-gray-300/80 rounded-lg px-4 flex flex-col justify-center items-center"
+                className="btn btn-ghost my-2 bg-secondary hover:bg-secondary/80 rounded-lg px-4 flex flex-col justify-center items-center"
                 onClick={() => {
                   (
                     document.getElementById(

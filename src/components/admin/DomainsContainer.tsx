@@ -10,7 +10,7 @@ function DomainsContainer() {
 
   return (
     <React.Fragment>
-      <div className="bg-white p-2 rounded-md mt-4 w-full md:w-1/2">
+      <div className="bg-card border border-border p-2 rounded-md mt-4 w-full md:w-1/2">
         <NewDomainAction revalidate={revalidate} />
         {data?.map((item, index) => (
           <DomainCard key={index} data={item} revalidate={revalidate} />

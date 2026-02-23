@@ -1,5 +1,6 @@
 import { AdminTabs } from "@/types/admin";
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 type IProps = {
   tab: AdminTabs;
@@ -9,8 +10,9 @@ type IProps = {
 function TabButton(props: IProps) {
   if (props.tab == AdminTabs.SHORT_LINKS) {
     return (
-      <button
-        className="btn btn-ghost flex gap-2 self-center"
+      <Button
+        variant="ghost"
+        className="flex gap-2 self-center"
         onClick={() => props.setTabState(AdminTabs.DOMAINS)}
       >
         Manage Domains
@@ -28,14 +30,15 @@ function TabButton(props: IProps) {
             d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
           />
         </svg>
-      </button>
+      </Button>
     );
   }
 
   if (props.tab == AdminTabs.DOMAINS) {
     return (
-      <button
-        className="btn btn-ghost flex gap-2 self-center group"
+      <Button
+        variant="ghost"
+        className="flex gap-2 self-center group"
         onClick={() => props.setTabState(AdminTabs.SHORT_LINKS)}
       >
         <svg
@@ -53,7 +56,7 @@ function TabButton(props: IProps) {
           />
         </svg>
         Manage Short Links
-      </button>
+      </Button>
     );
   }
 }
