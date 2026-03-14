@@ -9,6 +9,7 @@ import { AdminTabs } from "@/types/admin";
 import useFetch from "@/hooks/useFetch";
 import Loader from "../Loader";
 import { IDomain } from "@/types/domain.types";
+import toast from "react-hot-toast";
 
 export const AdminContext = React.createContext({
   data: [],
@@ -31,19 +32,47 @@ function ShortlinksContainer() {
   ] = useFetch<IDomain>("/api/domain");
 
   const createShortlink = async () => {
-    await instance.post(
-      `/api/db`,
-      {
-        shortlink: window.crypto.randomUUID(),
-        longlink: "https://google.com",
-        domain_id: null,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+    try {
+      const { data } = await instance.post(
+        `/api/db`,
+        {
+          shortlink: window.crypto.randomUUID(),
+          longlink: "https://google.com",
+          domain_id: null,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-    revalidate();
+      if (data.success) {
+        toast.success("Shortlink created successfully!", {
+          icon: "🔗",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+        await revalidate();
+      } else {
+        toast.error("Failed to create shortlink. Please try again.", {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to create shortlink. Please try again.", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
   };
 
   if (data == null || domains == null || domainLoading || loading) {
