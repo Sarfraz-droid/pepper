@@ -34,8 +34,8 @@ function useFetch<T>(api: string) {
     fetchData();
   }, [fetchData]);
 
-  const revalidate = useCallback(() => {
-    fetchData();
+  const revalidate = useCallback(async () => {
+    await fetchData();
   }, [fetchData]);
 
   return [
@@ -46,7 +46,7 @@ function useFetch<T>(api: string) {
   ] as [
     typeof data,
     {
-      revalidate: () => void;
+      revalidate: () => Promise<void>;
     }
   ];
 }

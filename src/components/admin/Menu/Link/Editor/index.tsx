@@ -50,7 +50,8 @@ function EditModal({ item }: { item: Shortlink }) {
 
     if (data.success) {
       toast.success(`Successfully updated Shortlink - ${data.id}`);
-      revalidate();
+      await revalidate();
+      closeModal(modalID);
     } else {
       toast.error("There has been an error saving the document");
     }

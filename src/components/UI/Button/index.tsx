@@ -18,8 +18,11 @@ function Button({
 
     const clickHandler = async() => {
         setIsLoading(true)
-        await onClick()
-        setIsLoading(false)
+        try {
+            await onClick()
+        } finally {
+            setIsLoading(false)
+        }
     }
 
   return (

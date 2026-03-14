@@ -60,7 +60,7 @@ function LinkCard({ item }: { item: Shortlink }) {
       },
     });
     setIsDeleteModalOpen(false);
-    revalidate();
+    await revalidate();
   };
 
   return (
