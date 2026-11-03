@@ -1,54 +1,34 @@
-import { Shortlink } from "@/types/shortlink.types";
-import React, { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { getErrorMessage, instance } from "@/utils/app/axiosInstance";
 
-function useFetch<T>(api: string) {
-  const [data, setData] = React.useState({
+type State<T> = {
+  data: T[] | null;
+  loading: boolean;
+  error: string | null;
+};
+
+/** Loads a JSON list; `revalidate` refreshes it without blanking the UI. */
+function useFetch<T>(url: string) {
+  const [state, setState] = useState<State<T>>({
     data: null,
     loading: true,
-    error: false,
-  } as {
-    data: T[] | null;
-    loading: boolean;
-    error: boolean;
+    error: null,
   });
 
-  const fetchData = useCallback(async () => {
+  const load = useCallback(async () => {
     try {
-      const res = await fetch(api);
-      const json = await res.json();
-      setData({
-        data: json as T[],
-        loading: false,
-        error: false,
-      });
-    } catch {
-      setData({
-        data: null,
-        loading: false,
-        error: true,
-      });
+      const { data } = await instance.get<T[]>(url);
+      setState({ data, loading: false, error: null });
+    } catch (err) {
+      setState((prev) => ({ ...prev, loading: false, error: getErrorMessage(err) }));
     }
-  }, []);
+  }, [url]);
 
-  React.useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
-  const revalidate = useCallback(() => {
-    fetchData();
-  }, [fetchData]);
-
-  return [
-    data,
-    {
-      revalidate,
-    },
-  ] as [
-    typeof data,
-    {
-      revalidate: () => void;
-    }
-  ];
+  return [state, { revalidate: load }] as const;
 }
 
 export default useFetch;

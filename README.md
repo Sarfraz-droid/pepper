@@ -31,10 +31,15 @@ Contents
 
 Pepper allows you to manage your shortlinks with ease. It is built with Next.js and Vercel serverless functions.
 
+### Features
+ - Create, edit, search and delete short links (press `/` to search, `n` for a new link)
+ - Custom domains, with per-domain short links
+ - Styled QR codes for every link, downloadable as PNG or SVG
+
 ### Tech Stack
  - Next.js
- - Edge Functions
- - Tailwind CSS
+ - Vercel Postgres
+ - Tailwind CSS + daisyUI
 
 ### Installation
 

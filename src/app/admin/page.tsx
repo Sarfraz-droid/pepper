@@ -1,51 +1,112 @@
 "use client";
-import ErrorHandler from "@/components/Error";
-import Loader from "@/components/Loader";
-import AdminContainer from "@/components/admin";
-import TabButton from "@/components/admin/TabButton";
-import { AdminTabs } from "@/types/admin";
-import { instance } from "@/utils/app/axiosInstance";
+
 import Image from "next/image";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { AiFillGithub } from "react-icons/ai";
+import { HiArrowRightOnRectangle } from "react-icons/hi2";
+import DomainsPanel from "@/components/admin/DomainsPanel";
+import LinksPanel from "@/components/admin/LinksPanel";
+import useFetch from "@/hooks/useFetch";
+import { AdminTabs } from "@/types/admin";
+import { IDomain } from "@/types/domain.types";
+import { Shortlink } from "@/types/shortlink.types";
+import { clearSession } from "@/utils/app/axiosInstance";
+
+const TAB_KEY = "pepper:tab";
 
 function AdminPage() {
-  const [tabState, setTabState] = useState(AdminTabs.SHORT_LINKS);
+  const [tab, setTab] = useState(AdminTabs.SHORT_LINKS);
+  const [links, { revalidate: revalidateLinks }] = useFetch<Shortlink>("/api/db");
+  const [domains, { revalidate: revalidateDomains }] = useFetch<IDomain>("/api/domain");
 
   useEffect(() => {
-    instance.defaults.withCredentials = true;
-    instance.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${window.localStorage.getItem("token")}`;
+    try {
+      const saved = window.localStorage.getItem(TAB_KEY);
+      if (saved === AdminTabs.DOMAINS) setTab(AdminTabs.DOMAINS);
+    } catch {}
   }, []);
 
-  return (
-    <div className="dark:text-white flex flex-col  items-center w-full">
-      <div className="flex justify-center items-center gap-4">
-        <Image
-          src="/assets/logo2.png"
-          className="p-2 bg-white rounded-full self-center"
-          alt="Pepper"
-          width={50}
-          height={50}
-        />
-        <h1 className="flex gap-1 self-center font-semibold text-lg  dark:text-purple-500">
-          Pepper <p className="text-white">Dashboard</p>
-        </h1>
-      </div>
-      <div className="flex justify-between items-center mt-5 w-full md:w-1/2">
-        <a
-          className=" p-2 flex gap-2 justify-center items-center hover:bg-white rounded-md transition-all group"
-          href={`https://github.com/Sarfraz-droid/pepper.git`}
-        >
-          <AiFillGithub className="w-5 h-5 group-hover:text-black" />
-          <span className="group-hover:text-black transition-all">GitHub</span>
-        </a>
-        <TabButton setTabState={setTabState} tab={tabState} />
-      </div>
+  const changeTab = (next: AdminTabs) => {
+    setTab(next);
+    try {
+      window.localStorage.setItem(TAB_KEY, next);
+    } catch {}
+  };
 
-      <AdminContainer tab={tabState} />
+  const logout = () => {
+    clearSession();
+    window.location.href = "/admin/login";
+  };
+
+  const tabs = [
+    { id: AdminTabs.SHORT_LINKS, label: "Links", count: links.data?.length },
+    { id: AdminTabs.DOMAINS, label: "Domains", count: domains.data?.length },
+  ];
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-10 border-b border-base-content/10 bg-base-200/80 backdrop-blur">
+        <div className="mx-auto flex h-14 max-w-4xl items-center gap-3 px-4">
+          <div className="flex items-center gap-2">
+            <Image src="/assets/logo2.png" alt="" width={28} height={28} className="rounded-full bg-white p-0.5" />
+            <span className="font-semibold">Pepper</span>
+          </div>
+          <div className="flex-1" />
+          <a
+            href="https://github.com/Sarfraz-droid/pepper"
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-ghost btn-sm btn-square"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <AiFillGithub className="h-5 w-5" />
+          </a>
+          <button className="btn btn-ghost btn-sm" onClick={logout} data-testid="logout">
+            <HiArrowRightOnRectangle className="h-4 w-4" />
+            <span className="hidden sm:inline">Log out</span>
+          </button>
+        </div>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-5 px-4 py-6">
+        <div role="tablist" className="tabs tabs-boxed w-fit bg-base-100">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              role="tab"
+              aria-selected={tab === t.id}
+              className={`tab gap-2 ${tab === t.id ? "tab-active" : ""}`}
+              onClick={() => changeTab(t.id)}
+              data-testid={`tab-${t.label.toLowerCase()}`}
+            >
+              {t.label}
+              {t.count != null && (
+                <span className={`badge badge-sm ${tab === t.id ? "badge-ghost" : "bg-base-300"}`}>{t.count}</span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {tab === AdminTabs.SHORT_LINKS ? (
+          <LinksPanel
+            links={links.data}
+            domains={domains.data ?? []}
+            loading={links.loading || domains.loading}
+            error={links.error}
+            revalidate={revalidateLinks}
+          />
+        ) : (
+          <DomainsPanel
+            domains={domains.data}
+            links={links.data ?? []}
+            loading={domains.loading}
+            error={domains.error}
+            revalidate={revalidateDomains}
+            revalidateLinks={revalidateLinks}
+          />
+        )}
+      </main>
     </div>
   );
 }

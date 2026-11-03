@@ -1,59 +1,48 @@
-import verifyRoute from "@/utils/api/middlewares/verifyRoute";
-import { ResponseManager, serviceHandler } from "@/utils/api/serviceHandler";
+import { jsonError, withAuth } from "@/utils/api/auth";
+import { normalizeDomain, validateDomain } from "@/utils/shared/links";
 import { sql } from "@vercel/postgres";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export const GET = withAuth(async () => {
   const { rows } = await sql`SELECT * FROM domains ORDER BY id DESC`;
+  return NextResponse.json(rows);
+});
 
-  return Response.json(rows);
-}
+export const POST = withAuth(async (request: NextRequest) => {
+  const body = await request.json().catch(() => ({}));
+  const id = body.id ?? null;
+  const domain = normalizeDomain(String(body.domain ?? ""));
 
-export const POST = serviceHandler(
-  verifyRoute,
-  async (request: NextRequest) => {
-    const { domain, id } = await request.json();
+  const domainError = validateDomain(domain);
+  if (domainError) return jsonError(domainError);
 
-    if (!domain) {
-      return ResponseManager.json(
-        { error: "Missing domain" },
-        {
-          status: 400,
-        }
-      );
-    }
+  const { rowCount: taken } = await sql`
+    SELECT 1 FROM domains
+    WHERE LOWER(domain) = ${domain} AND id::text <> ${id === null ? "" : String(id)}`;
+  if (taken) return jsonError(`${domain} has already been added`, 409);
 
-    if (id) {
-      await sql`UPDATE domains SET domain = ${domain} WHERE id = ${id}`;
-
-      return ResponseManager.json({
-        success: true,
-        id: id,
-      });
-    } else {
-      const { rows } =
-        await sql`INSERT INTO domains (domain) VALUES (${domain}) RETURNING id`;
-
-      return ResponseManager.json({
-        success: true,
-        created: true,
-        id: rows[0].id,
-      });
-    }
+  if (id !== null) {
+    const { rowCount } = await sql`UPDATE domains SET domain = ${domain} WHERE id = ${id}`;
+    if (!rowCount) return jsonError("Domain not found", 404);
+    return NextResponse.json({ success: true, id });
   }
-);
 
-export async function DELETE(request: NextRequest) {
+  const { rows } =
+    await sql`INSERT INTO domains (domain) VALUES (${domain}) RETURNING id`;
+
+  return NextResponse.json({ success: true, created: true, id: rows[0].id });
+});
+
+export const DELETE = withAuth(async (request: NextRequest) => {
   const id = request.nextUrl.searchParams.get("id");
+  if (!id) return jsonError("Missing id");
 
-  if (!id) {
-    return Response.json({ error: "Missing id" });
-  }
-
+  // Links on a removed domain fall back to the default domain instead of
+  // pointing at a domain that no longer exists.
+  await sql`UPDATE shortlinks SET domain_id = NULL WHERE domain_id = ${id}`;
   await sql`DELETE FROM domains WHERE id = ${id}`;
 
-  return Response.json({
-    success: true,
-    deleted: true,
-  });
-}
+  return NextResponse.json({ success: true, deleted: true });
+});

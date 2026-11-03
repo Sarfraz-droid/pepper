@@ -2,34 +2,34 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "node_modules/preline/dist/*.js",
   ],
-  themes: ["light", "cupcake"],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
+        poppins: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },
   daisyui: {
     themes: [
       {
-        dark: {
-          ...require("daisyui/src/theming/themes")["light"],
+        pepper: {
+          ...require("daisyui/src/theming/themes")["dark"],
           primary: "#9333EA",
+          "primary-content": "#ffffff",
+          secondary: "#c084fc",
+          "base-100": "#16131c",
+          "base-200": "#110f16",
+          "base-300": "#0b0a0f",
+          "base-content": "#e7e5ee",
         },
       },
     ],
+    darkTheme: "pepper",
+    logs: false,
   },
-  plugins: [require("@headlessui/tailwindcss"), require("daisyui")],
+  plugins: [require("daisyui")],
 };
 export default config;

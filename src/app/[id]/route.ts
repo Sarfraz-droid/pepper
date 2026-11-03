@@ -1,35 +1,38 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
+import { normalizeDomain } from "@/utils/shared/links";
 
-export async function GET(request: NextRequest) {
-  const host = request.headers.get("host");
-  const path = request.nextUrl.pathname;
+export const dynamic = "force-dynamic";
 
-  const shortlink = path.split("/")[1];
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const host = (request.headers.get("host") ?? "").toLowerCase();
+  const hostname = host.split(":")[0];
+  const shortlink = decodeURIComponent(params.id);
 
-  const { rows } =
-    await sql`SELECT s.shortlink, s.longlink, s.domain_id, d.domain FROM shortlinks s 
-    INNER JOIN domains d
-    ON (s.shortlink = ${shortlink}  
-    AND d.id = s.domain_id)
-    OR (s.domain_id is NULL and 
-    s.shortlink = ${shortlink}) LIMIT 1`;
+  const { rows } = await sql`
+    SELECT s.longlink, s.domain_id, d.domain FROM shortlinks s
+    LEFT JOIN domains d ON d.id = s.domain_id
+    WHERE s.shortlink = ${shortlink}`;
 
-  if (rows.length === 0) {
-    return Response.json({ error: "Invalid shortlink" });
+  // A link bound to the requesting domain wins; links without a domain
+  // work on every domain.
+  const match =
+    rows.find((row) => {
+      if (row.domain_id == null || !row.domain) return false;
+      const domain = normalizeDomain(row.domain);
+      return domain === host || domain === hostname;
+    }) ?? rows.find((row) => row.domain_id == null);
+
+  if (!match) {
+    return NextResponse.redirect(new URL("/invalid-link", request.url));
   }
 
-  const { longlink, domain_id, domain } = rows[0];
-
-  if (domain_id == null || host?.includes(domain)) {
-    return Response.redirect(longlink);
+  try {
+    return NextResponse.redirect(new URL(match.longlink));
+  } catch {
+    return NextResponse.redirect(new URL("/invalid-link", request.url));
   }
-
-  if (host === process.env.HOST_NAME) {
-    return Response.redirect(`http://${process.env.HOST_NAME}/admin`);
-  }
-
-  return Response.redirect(`http://${process.env.HOST_NAME}/invalid-link`);
 }
-
-// export const revalidate = 3;
