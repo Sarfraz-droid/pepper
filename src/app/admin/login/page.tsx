@@ -1,100 +1,98 @@
 "use client";
 
-import Button from "@/components/UI/Button";
-import { instance } from "@/utils/app/axiosInstance";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { AiFillGithub } from "react-icons/ai";
+import { HiExclamationCircle } from "react-icons/hi2";
+import { getErrorMessage, instance, setSession } from "@/utils/app/axiosInstance";
 
 function LoginPage() {
-  const [formDetails, setFormDetails] = React.useState({
-    username: "",
-    password: "",
-  });
+  const [form, setForm] = useState({ username: "", password: "" });
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    const res = await instance.post("/api/auth", formDetails);
-
-    if (res.data.token) {
-      document.cookie = `token=${res.data.token}; path=/admin`;
-      window.localStorage.setItem("token", res.data.token);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const { data } = await instance.post("/api/auth", form);
+      setSession(data.token);
       window.location.href = "/admin";
+    } catch (err) {
+      setError(getErrorMessage(err, "Could not log in"));
+      setLoading(false);
     }
   };
 
   return (
-    <React.Fragment>
+    <main className="relative flex min-h-screen flex-col items-center justify-center px-4 py-10">
       <a
-        className="absolute top-0 left-0 m-2   p-2 flex gap-2 justify-center items-center hover:bg-white rounded-md transition-all group"
-        href={`https://github.com/Sarfraz-droid/pepper.git`}
+        className="btn btn-ghost btn-sm btn-square absolute left-3 top-3"
+        href="https://github.com/Sarfraz-droid/pepper"
+        aria-label="GitHub"
       >
-        <AiFillGithub className="w-5 h-5 text-white group-hover:text-black" />
+        <AiFillGithub className="h-5 w-5" />
       </a>
-      <Image
-        src="/assets/logo2.png"
-        className="logo"
-        alt="Pepper"
-        width={100}
-        height={100}
-      />
-      <h1 className="text-xl text-center text-purple-600 dark:text-white font-bold py-5">
-        Pepper
-      </h1>
-      <p className="text-white/50 mb-4">Handle Your ShortLinks, Easily</p>
-      <div className="w-1/3 my-8 border border-white/10" />
+
+      <div className="mb-8 flex flex-col items-center gap-3 text-center">
+        <Image src="/assets/logo2.png" alt="" width={64} height={64} className="rounded-full bg-white p-1" priority />
+        <h1 className="text-2xl font-semibold">Sign in to Pepper</h1>
+        <p className="text-sm text-base-content/60">Handle your short links, easily</p>
+      </div>
+
       <form
-        className="bg-white md:w-1/3 flex flex-col gap-4 dark:bg-black/20 dark:border-2 border-white/10 p-5 rounded-md shadow-2xl shadow-purple-800/10"
-        onSubmit={(e) => {
-          e.preventDefault();
-
-          handleLogin();
-        }}
+        className="flex w-full max-w-sm flex-col gap-4 rounded-2xl border border-base-content/10 bg-base-100 p-6 shadow-xl shadow-primary/5"
+        onSubmit={handleLogin}
       >
-        <div className="w-full flex flex-col">
-          <label className="text-black dark:text-white text-sm py-1 opacity-40">
-            Username
-          </label>
+        {error && (
+          <div role="alert" className="alert alert-error py-2 text-sm">
+            <HiExclamationCircle className="h-5 w-5" />
+            <span>{error}</span>
+          </div>
+        )}
+        <label className="form-control">
+          <div className="label">
+            <span className="label-text">Username</span>
+          </div>
           <input
-            className="input input-ghost focus:bg-black text-white focus:text-white"
+            className="input input-bordered"
             type="text"
-            placeholder="Username"
+            autoComplete="username"
+            autoFocus
+            value={form.username}
+            onChange={(e) => setForm({ ...form, username: e.target.value })}
             data-testid="username"
-            onChange={(e) =>
-              setFormDetails({ ...formDetails, username: e.target.value })
-            }
           />
-        </div>
-        <div className="w-full flex flex-col">
-          <label className="text-black dark:text-white  text-sm py-1 opacity-40">
-            Password
-          </label>
+        </label>
+        <label className="form-control">
+          <div className="label">
+            <span className="label-text">Password</span>
+          </div>
           <input
-            className="input input-ghost focus:bg-black text-white focus:text-white"
+            className="input input-bordered"
             type="password"
-            placeholder="Password"
+            autoComplete="current-password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
             data-testid="password"
-            onChange={(e) =>
-              setFormDetails({ ...formDetails, password: e.target.value })
-            }
           />
-        </div>
-
-        <div className="mt-3">
-          <Button
-            className="btn w-full"
-            onClick={handleLogin}
-            loader
-            data-testid="login"
-          >
-            Login
-          </Button>
-        </div>
+        </label>
+        <button
+          type="submit"
+          className="btn btn-primary mt-2"
+          disabled={loading || !form.username || !form.password}
+          data-testid="login"
+        >
+          {loading && <span className="loading loading-spinner loading-sm" />}
+          Log in
+        </button>
       </form>
 
-      <div className="mt-5 dark:text-white italic opacity-50 text-center text-xs md:text-base">
-        *NOTE: The login credentials are specified while setup
-      </div>
-    </React.Fragment>
+      <p className="mt-6 max-w-sm text-center text-xs text-base-content/50">
+        Credentials are the <code>NEXT_PUBLIC_ID</code> and <code>NEXT_PUBLIC_PASSWORD</code> values set when deploying.
+      </p>
+    </main>
   );
 }
 

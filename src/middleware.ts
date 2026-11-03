@@ -2,16 +2,20 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyToken } from "./utils/api/getToken";
 
-// This function can be marked `async` if using `await` inside
 export const middleware = (request: NextRequest) => {
   const token = request.cookies.get("token");
+  const loggedIn = !!token && verifyToken(token.value);
+  const isLogin = request.nextUrl.pathname.startsWith("/admin/login");
 
-  if (!token || !verifyToken(token.value)) {
+  if (!loggedIn && !isLogin) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+  if (loggedIn && isLogin) {
+    return NextResponse.redirect(new URL("/admin", request.url));
   }
   return NextResponse.next();
 };
 
 export const config = {
-  matcher: "/admin",
+  matcher: ["/admin", "/admin/login"],
 };
